@@ -1,0 +1,339 @@
+[gd_scene load_steps=16 format=3 uid="uid://c6fqw37u5jb5k"]
+
+[ext_resource type="PackedScene" uid="uid://bgm4lfjpd6tti" path="res://SonicBlocksDemo/Scenes/Main.tscn" id="1_agcoq"]
+[ext_resource type="Script" uid="uid://d1f7ctlbqxbmt" path="res://addons/SonicBlocks/GDScript/FPS.gd" id="1_w30xa"]
+[ext_resource type="Script" uid="uid://dfr0qi3iatubs" path="res://addons/SonicBlocks/GDScript/SonicBlockWorld.gd" id="3_agcoq"]
+[ext_resource type="Script" uid="uid://cnxrjsv14r8fu" path="res://SonicBlocksDemo/Scripts/GameManager.gd" id="3_kkm5g"]
+[ext_resource type="Script" uid="uid://duruq44n0ohsx" path="res://addons/SonicBlocks/GDScript/SonicBlock.gd" id="4_kkm5g"]
+[ext_resource type="Script" uid="uid://b4rcy4t5o36bv" path="res://addons/SonicBlocks/GDScript/SonicHitbox.gd" id="5_1adhc"]
+[ext_resource type="Script" uid="uid://b328i6pv3ktlj" path="res://SonicBlocksDemo/Scripts/PlayerExample.gd" id="5_4ww0v"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_w30xa"]
+size = Vector3(10, 0.5, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_agcoq"]
+size = Vector3(2.4, 1.2, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kkm5g"]
+size = Vector3(2.4, 1.2, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ww0v"]
+size = Vector3(3.6, 1.2, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4cvuw"]
+size = Vector3(0.5, 1, 0.5)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4cvuw"]
+
+[sub_resource type="Sky" id="Sky_j2eoc"]
+sky_material = SubResource("ProceduralSkyMaterial_4cvuw")
+
+[sub_resource type="Environment" id="Environment_7mckg"]
+background_mode = 2
+sky = SubResource("Sky_j2eoc")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Main" parent="." node_paths=PackedStringArray("players") instance=ExtResource("1_agcoq")]
+players = [NodePath("../SonicBlockWorld/Player1"), NodePath("../SonicBlockWorld/Player2")]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.0
+offset_right = 33.0
+offset_bottom = 25.0
+grow_horizontal = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "999 fps"
+script = ExtResource("1_w30xa")
+
+[node name="SonicBlockWorld" type="Node" parent="." node_paths=PackedStringArray("blocks")]
+script = ExtResource("3_agcoq")
+blocks = [NodePath("Floor"), NodePath("Wall1"), NodePath("Wall2"), NodePath("Wall3"), NodePath("Wall4"), NodePath("Platform"), NodePath("Platform2"), NodePath("Platform3"), NodePath("Platform4"), NodePath("Player1"), NodePath("Player2")]
+
+[node name="Floor" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(0, -250, 0)
+box_extents = Vector3i(5000, 250, 5000)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Floor/Graphics"]
+mesh = SubResource("BoxMesh_w30xa")
+
+[node name="Wall1" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(-5400, 0, 0)
+box_offset = Vector3i(0, 2000, 0)
+box_extents = Vector3i(500, 2000, 5000)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Wall1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4, 0, 0)
+
+[node name="Wall2" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(5400, 0, 0)
+box_offset = Vector3i(0, 2000, 0)
+box_extents = Vector3i(500, 2000, 5000)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Wall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4, 0, 0)
+
+[node name="Wall3" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(0, 0, 5400)
+box_offset = Vector3i(0, 2000, 0)
+box_extents = Vector3i(5000, 2000, 500)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Wall3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.4)
+
+[node name="Wall4" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(0, 0, -5400)
+box_offset = Vector3i(0, 2000, 0)
+box_extents = Vector3i(5000, 2000, 500)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Wall4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.4)
+
+[node name="Platform" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(-2500, 0, 0)
+box_offset = Vector3i(0, 600, 0)
+box_extents = Vector3i(1200, 600, 600)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Platform/Graphics"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_agcoq")
+
+[node name="Platform2" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(3800, 0, -2500)
+box_offset = Vector3i(0, 600, 0)
+box_extents = Vector3i(600, 600, 1200)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Platform2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0, -2.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Platform2/Graphics"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_kkm5g")
+
+[node name="Platform3" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(4300, 0, 3100)
+box_offset = Vector3i(0, 600, 0)
+box_extents = Vector3i(600, 600, 1800)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Platform3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3, 0, 3.1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Platform3/Graphics"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_4ww0v")
+
+[node name="Platform4" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("graphics")]
+script = ExtResource("4_kkm5g")
+graphics = NodePath("Graphics")
+is_active = true
+is_static = true
+box_position = Vector3i(3100, 0, 4300)
+box_offset = Vector3i(0, 600, 0)
+box_extents = Vector3i(1800, 600, 600)
+preview_color = Color(0, 0, 1, 1)
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Platform4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0, 4.3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Platform4/Graphics"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_4ww0v")
+
+[node name="Player1" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("camera", "graphics", "hurtboxes", "hitboxes") groups=["network_sync"]]
+script = ExtResource("5_4ww0v")
+speed = 2000
+jump_speed = 5500
+gravity = 180
+camera = NodePath("Graphics/Camera3D")
+graphics = NodePath("Graphics")
+is_active = true
+is_character = true
+box_position = Vector3i(300, 1000, 300)
+box_offset = Vector3i(0, 500, 0)
+box_extents = Vector3i(250, 500, 250)
+generate_collision_events = true
+preview_color = Color(0, 0, 1, 1)
+hurtboxes = [NodePath("Hurtboxes/SonicHurtbox1"), NodePath("Hurtboxes/SonicHurtbox2")]
+hitboxes = [NodePath("Hitboxes/SonicHitbox1"), NodePath("Hitboxes/SonicHitbox2")]
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Player1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1, 0.3)
+
+[node name="Camera3D" type="Camera3D" parent="SonicBlockWorld/Player1/Graphics"]
+transform = Transform3D(1, 0, 0, 0, 0.931875, 0.362779, 0, -0.362779, 0.931875, 0, 1.766, 2.518)
+current = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Player1/Graphics"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_4cvuw")
+
+[node name="Hurtboxes" type="Node" parent="SonicBlockWorld/Player1"]
+
+[node name="SonicHurtbox1" type="Node" parent="SonicBlockWorld/Player1/Hurtboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(0, 1, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="SonicHurtbox2" type="Node" parent="SonicBlockWorld/Player1/Hurtboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(0, 1, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="Hitboxes" type="Node" parent="SonicBlockWorld/Player1"]
+
+[node name="SonicHitbox1" type="Node" parent="SonicBlockWorld/Player1/Hitboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(1, 0, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="SonicHitbox2" type="Node" parent="SonicBlockWorld/Player1/Hitboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(1, 0, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="Player2" type="Node" parent="SonicBlockWorld" node_paths=PackedStringArray("camera", "graphics", "hurtboxes", "hitboxes") groups=["network_sync"]]
+script = ExtResource("5_4ww0v")
+speed = 2000
+jump_speed = 5500
+gravity = 180
+camera = NodePath("Graphics/Camera3D")
+graphics = NodePath("Graphics")
+is_active = true
+is_character = true
+box_position = Vector3i(-300, 1000, 300)
+box_offset = Vector3i(0, 500, 0)
+box_extents = Vector3i(250, 500, 250)
+generate_collision_events = true
+preview_color = Color(0, 0, 1, 1)
+hurtboxes = [NodePath("Hurtboxes/SonicHurtbox1"), NodePath("Hurtboxes/SonicHurtbox2")]
+hitboxes = [NodePath("Hitboxes/SonicHitbox1"), NodePath("Hitboxes/SonicHitbox2")]
+draw_debug_shapes = true
+
+[node name="Graphics" type="Node3D" parent="SonicBlockWorld/Player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1, 0.3)
+
+[node name="Camera3D" type="Camera3D" parent="SonicBlockWorld/Player2/Graphics"]
+transform = Transform3D(1, 0, 0, 0, 0.931875, 0.362779, 0, -0.362779, 0.931875, 0, 1.766, 2.518)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SonicBlockWorld/Player2/Graphics"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_4cvuw")
+
+[node name="Hurtboxes" type="Node" parent="SonicBlockWorld/Player2"]
+
+[node name="SonicHurtbox1" type="Node" parent="SonicBlockWorld/Player2/Hurtboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(0, 1, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="SonicHurtbox2" type="Node" parent="SonicBlockWorld/Player2/Hurtboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(0, 1, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="Hitboxes" type="Node" parent="SonicBlockWorld/Player2"]
+
+[node name="SonicHitbox1" type="Node" parent="SonicBlockWorld/Player2/Hitboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(1, 0, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="SonicHitbox2" type="Node" parent="SonicBlockWorld/Player2/Hitboxes"]
+script = ExtResource("5_1adhc")
+preview_color = Color(1, 0, 0, 1)
+metadata/_custom_type_script = "uid://b4rcy4t5o36bv"
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("world") groups=["network_sync"]]
+process_priority = 1
+script = ExtResource("3_kkm5g")
+world = NodePath("../SonicBlockWorld")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.774867, 0.411822, -0.479566, 0, 0.758658, 0.651489, 0.632124, -0.504818, 0.587859, 0, 1.53091, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7mckg")
