@@ -19,9 +19,12 @@ func _simulate() -> void:
 		x.move(tickrate)
 	#collision pass
 	for x in blocks.size():
+		if not blocks[x].is_active: continue #do not waste time checking inactive collisions
+		if blocks[x].box_extents == Vector3i.ZERO: continue
 		for y in blocks.size():
 			if y <= x: continue #avoid repeating collisions
-			if not blocks[x].is_active or not blocks[y].is_active: continue #do not wast time checking inactive collisions
+			if not blocks[y].is_active: continue #do not waste time checking inactive collisions
+			if blocks[y].box_extents == Vector3i.ZERO: continue
 			if blocks[x].is_static and blocks[y].is_static: continue #do not wast time checking collisions against static objects
 			if blocks[x] != blocks[y] and bodies_overlap(blocks[x], blocks[y]):
 				var normal = Vector3i()
@@ -47,9 +50,10 @@ func _simulate() -> void:
 					blocks[y].collision_event(blocks[x], point)
 	#hitboxes pass
 	for x in characters.size():
+		if characters[x].hitboxes.size() == 0: continue  #do not try to do anything if there's no boxes to test with
 		for y in characters.size():
 			if x == y: continue #ignore same character
-			if characters[x].hitboxes.size() == 0 or characters[y].hurtboxes.size() == 0: continue #do not try to do anything if there's no boxes to test against
+			if characters[y].hurtboxes.size() == 0: continue #do not try to do anything if there's no boxes to test against
 			for hb_x in characters[x].hitboxes.size():
 				if characters[x].hitboxes[hb_x].box_extents == Vector3i.ZERO: continue
 				for hb_y in characters[y].hurtboxes.size():
